@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+const cardsItems = document.querySelector(".cards-items");
+const cardItemTemplate = document.querySelector('#card-item');
+const card = document.querySelector('.card');
+const cardItems = document.querySelector('.card__items');
+const cardTotalBalance = document.querySelector('.card__total-balance');
+const cardFurtherButton = document.querySelector('.card__further');
+
+Telegram.WebApp.ready()
+configureThemeColor(Telegram.WebApp.colorScheme);
+configureMainButton({text: 'view card', color: '#008000', onclick: mainButtonClickListener});
+Telegram.WebApp.MainButton.show();
+function mainButtonClickListener() {
+    if (Telegram.WebApp.MainButton.text.toLowerCase() === 'view card') {
+        configureMainButton({text: 'close card', color: '#FF0000', onclick: mainButtonClickListener});
+    } else {
+        configureMainButton({text: 'view card', color: '#008000', onclick: mainButtonClickListener});
+    }
+    card.classList.toggle('active');
+}
+
+function configureMainButton({text, color, textColor = '#ffffff', onclick}) {
+    Telegram.WebApp.MainButton.text = text.toUpperCase();
+    Telegram.WebApp.MainButton.color = color;
+    Telegram.WebApp.MainButton.textColor = textColor;
+    Telegram.WebApp.MainButton.onClick(onclick);
+}
+function configureThemeColor(color) {
+    if (color === 'dark') {
+        document.documentElement.style.setProperty('--body-background-color', '#1f1e1f');
+        document.documentElement.style.setProperty('--title-color', 'white');
+        document.documentElement.style.setProperty('--sub-text-color', 'white');
+    }
+}
+    </script>
+    <title>Telegram Virtual Cards</title>
+</head>
+<body>
+<h1 class="title">Telegram Virtual Cards</h1>
+<div class="cards-items"></div>
+<div class="cards">
+    <div class="card-title-wrapper">
+        <div class="title">Template Card</div>
+        <button class="card__further">Submit &#x2192;</button>
+    </div>
+    <div class="card__total-balance">$0.0</div>
+</div>
+
+<template id="card-item">
+    <div class="card-item">
+        <div class="card-item__item">
+            <img alt="card" class="card-item__icon">
+            <div class="card-item__info">
+                <div class="card-item__wrapper">
+                    <div class="card-item__name"></div>
+                    <div class="card-item__amount"></div>
+                </div>
+                <div class="card-item__buttons">
+                    <button class="card-item__button" data-remove>-</button>
+                    <button class="card-item__button" data-add>+</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-item__price"></div>
+    </div>
+</template>
+</body>
+</html>
